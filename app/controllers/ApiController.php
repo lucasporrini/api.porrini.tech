@@ -14,11 +14,11 @@ class ApiController
     public function github_webhook()
     {
         // On affiche les fichiers du dossier "automatic"
-        $files = scandir('app/auto');
+        $files = scandir('./app/auto');
         print_r($files);
         exit;
         // On verifie que le script est présent dans le dossier "automatic"
-        if(!file_exists('app/auto/autodeploy.sh')) {
+        if(!file_exists('./app/auto/autodeploy.sh')) {
             echo "Le script n'est pas présent dans le dossier 'auto'";
             return;
         }
