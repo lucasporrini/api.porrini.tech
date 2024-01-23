@@ -13,7 +13,7 @@ class ApiController
 
     public function github_webhook()
     {
-        // On affiche les fichiers du dossier "automatic"
+        // On affiche les fichiers du dossier "auto"
         $files = scandir('./app/auto');
         print_r($files);
         exit;
