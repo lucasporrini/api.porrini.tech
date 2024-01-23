@@ -22,6 +22,14 @@ class ApiController
         // On execute le script shell
         $output = shell_exec('./app/auto/autodeploy.sh');
 
+        // On envoie un mail pour confirmer le déploiement
+        $to = "2608lucas@gmail.com";
+        $subject = "Déploiement du site";
+        $message = "Le site a été déployé avec succès";
+        $headers = "From: api.deploy@porrini.tech" . "\r\n";
+        
+        mail($to, $subject, $message, $headers);
+
         // On retourne le résultat
         echo $output;
     }
