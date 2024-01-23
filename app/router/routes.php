@@ -11,4 +11,6 @@ $router->get('/get_chatbot_messages', [$ApiController, 'get_chatbot_messages']);
 $router->get('/get_chatbot_response_to_message/:id', [$ApiController, 'get_chatbot_response_to_message']);
 $router->get('/get_chatbot_buttons', [$ApiController, 'get_chatbot_buttons']);
 
+$router->post('/github_webhook', [$ApiController, 'github_webhook']);
+
 $router->run();
