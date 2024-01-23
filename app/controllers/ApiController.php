@@ -13,15 +13,14 @@ class ApiController
 
     public function github_webhook()
     {
-        print_r(__DIR__);
         // On verifie que le script est présent dans le dossier "automatic"
-        if(!file_exists('app/auto/autodeploy.sh')) {
+        if(!file_exists(__DIR__ . '../auto/autodeploy.sh')) {
             echo "Le script n'est pas présent dans le dossier 'auto'";
             return;
         }
 
         // On execute le script shell
-        $output = shell_exec('app/auto/autodeploy.sh');
+        $output = shell_exec(__DIR__ . '../auto/autodeploy.sh');
 
         // On retourne le résultat
         echo $output;
