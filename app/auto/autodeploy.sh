@@ -1,12 +1,12 @@
-# move to api folder
+# Se déplacer à la racine du projet
 cd ../../
 
-# add the date UTC+1 to the log file
+# Ajouter la date dans les fichiers de log
 date >> logs/auto/deploy.log
 date >> logs/auto/error.log
 
-# execute the command
-git pull origin main >> logs/auto/deploy.log
+# Exécuter les commandes git et rediriger les sorties vers les fichiers de log
+git pull origin main >> logs/auto/deploy.log 2>> logs/auto/error.log
 
-# move to current folder
+# Retour au répertoire initial si nécessaire
 cd -
