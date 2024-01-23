@@ -6,7 +6,7 @@ date >> logs/auto/deploy.log
 date >> logs/auto/error.log
 
 # execute the command
-git pull origin main >> logs/auto/deploy.log 2>> logs/auto/error.log
+git pull origin main >> logs/auto/deploy.log
 
 # move to current folder
 cd -
