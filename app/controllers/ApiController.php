@@ -24,7 +24,7 @@ class ApiController
         }
 
         // On execute le script shell
-        $output = shell_exec('app/auto/autodeploy.sh');
+        $output = shell_exec('./app/auto/autodeploy.sh');
 
         // On retourne le résultat
         echo $output;
