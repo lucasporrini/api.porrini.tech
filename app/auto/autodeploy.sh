@@ -1,5 +1,5 @@
 # Se déplacer à la racine du projet
-cd ../../
+cd ./
 
 # Ajouter la date dans les fichiers de log
 date >> logs/auto/deploy.log
