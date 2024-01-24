@@ -72,7 +72,7 @@ class ApiController
 
             // On envoie un mail d'echec
             $to = DEV_MAIL;
-            $subject = "Echec - Déploiement du site";
+            $subject = "Echec - Déploiement du site"; 
             $message = "Le site n\'a pu être déployé";
             $message .= "\n\nDernier commit: " . $lastcommit;
             $headers = "From: api.deploy@porrini.tech" . "\r\n";
