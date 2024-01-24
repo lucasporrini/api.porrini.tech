@@ -13,25 +13,28 @@ class ApiController
 
     public function github_webhook()
     {
-        // On verifie que le script est présent dans le dossier "automatic"
-        if(!file_exists('./app/auto/autodeploy.sh')) {
-            echo "Le script n'est pas présent dans le dossier 'auto'";
-            return;
-        }
+        echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';
+        // // On verifie que le script est présent dans le dossier "automatic"
+        // if(!file_exists('./app/auto/autodeploy.sh')) {
+        //     echo "Le script n'est pas présent dans le dossier 'auto'";
+        //     return;
+        // }
 
-        // On execute le script shell
-        $output = shell_exec('./app/auto/autodeploy.sh');
+        // // On execute le script shell
+        // $output = shell_exec('./app/auto/autodeploy.sh');
 
-        // On envoie un mail pour confirmer le déploiement
-        $to = "2608lucas@gmail.com";
-        $subject = "Déploiement du site";
-        $message = "Le site a été déployé avec succès";
-        $headers = "From: api.deploy@porrini.tech" . "\r\n";
+        // // On envoie un mail pour confirmer le déploiement
+        // $to = "2608lucas@gmail.com";
+        // $subject = "Déploiement du site";
+        // $message = "Le site a été déployé avec succès";
+        // $headers = "From: api.deploy@porrini.tech" . "\r\n";
         
-        mail($to, $subject, $message, $headers);
+        // mail($to, $subject, $message, $headers);
 
-        // On retourne le résultat
-        echo $output;
+        // // On retourne le résultat
+        // echo $output;
     }
 
     public function index()
