@@ -29,7 +29,7 @@ class ApiController
         if (hash_equals('sha1=' . $hash, $githubSignature)) {
             // On integre un message de validation avec la date et l'heure
             $date = date('d/m/Y H:i:s');
-            $data = $date . ' - ' . $payload; 
+            $data = $date . ' - ' . $payload;
 
             // On enregistre le payload dans un fichier
             file_put_contents('./logs/auto/payload.log', 'Valid payload:' . $data . ";\n", FILE_APPEND);
