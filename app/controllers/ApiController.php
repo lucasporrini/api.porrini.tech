@@ -25,8 +25,13 @@ class ApiController
         // On envoie un mail pour confirmer le déploiement
         $to = "2608lucas@gmail.com";
         $subject = "Déploiement du site";
-        $message = "Le site a été déployé avec succès:" . print_r($_POST);
+        $message = "Le site a été déployé avec succès";
         $headers = "From: api.deploy@porrini.tech" . "\r\n"; 
+
+        // Enregistrement du POST dans un fichier
+        $file = fopen('./logs/auto/post.log', 'a');
+        fwrite($file, json_encode($_POST, JSON_UNESCAPED_UNICODE));
+        fclose($file);
         
         mail($to, $subject, $message, $headers);
 
