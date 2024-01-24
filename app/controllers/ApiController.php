@@ -14,7 +14,7 @@ class ApiController
     public function github_webhook()
     {
         // Enregistrement du payload dans un fichier
-        $payload = file_get_contents('php://input');
+        $payload = file_get_contents('php://input'); 
         $githubSignature = isset($_SERVER['HTTP_X_HUB_SIGNATURE']) ? $_SERVER['HTTP_X_HUB_SIGNATURE'] : '';
 
         // On vérifie que le secret est présent dans le fichier .env
