@@ -19,7 +19,7 @@ class ApiController
 
         // On vérifie que le secret est présent dans le fichier .env
         $secret = getenv('GITHUB_SECRET');
-        if(!$secret) {
+        if(!$secret) { 
             echo "Le secret n'est pas présent dans le fichier .env";
             return;
         }
