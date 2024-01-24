@@ -27,37 +27,56 @@ class ApiController
         $hash = hash_hmac('sha1', $payload, $secret); // On génère le hash
 
         if (hash_equals('sha1=' . $hash, $githubSignature)) {
-            file_put_contents('./logs/auto/payload.log', 'payload: ' . $payload . ';\nhash: ' . $hash . ';\nsecret: ' . $secret . ';\ngithubSignature: ' . $githubSignature . ';\n', FILE_APPEND);
-            // La signature est valide, traiter le payload
-            $data = json_decode($payload, true);
+            // On integre un message de validation avec la date et l'heure
+            $date = date('d/m/Y H:i:s');
+            $data = $date . ' - ' . $payload;
+
+            // On enregistre le payload dans un fichier
+            file_put_contents('./logs/auto/payload.log', 'Valid payload:' . $data . ";\n", FILE_APPEND);
+
+            // On verifie que le script est présent dans le dossier "automatic"
+            if(!file_exists('./app/auto/autodeploy.sh')) {
+                echo "Le script n'est pas présent dans le dossier 'auto'";
+                return;
+            }
+
+            // On execute le script shell
+            shell_exec('./app/auto/autodeploy.sh');
+
+            // On récupère les données du dernier commit pour les enregistrer dans un fichier
+            $lastcommit = $payload['head_commit']['id'] . ' - ' . $payload['head_commit']['message'];
+
+
+            // On envoie un mail pour confirmer le déploiement
+            $to = DEV_MAIL;
+            $subject = "Valid - Déploiement du site";
+            $message = "Le site a été déployé avec succès";
+            $message .= "\n\nDernier commit: " . $lastcommit;
+            $headers = "From: api.deploy@porrini.tech" . "\r\n";
+            
+            mail($to, $subject, $message, $headers);
             return;
-            // Votre logique de traitement ici
         } else {
             // La signature n'est pas valide, rejeter la requête
-            file_put_contents('./logs/auto/payload.log', 'payload: ' . $payload . ';\nhash: ' . $hash . ';\nsecret: ' . $secret . ';\ngithubSignature: ' . $githubSignature . ';\n', FILE_APPEND);
-            http_response_code(403); // Accès interdit
-            die('Signature non valide'); 
-        }
+            $date = date('d/m/Y H:i:s');
+            $data = $date . ' - ' . $payload;
+            file_put_contents('./logs/auto/payload.log', 'Unvalid payload: ' . $data . ";\n", FILE_APPEND);
 
-        // On verifie que le script est présent dans le dossier "automatic"
-        if(!file_exists('./app/auto/autodeploy.sh')) {
-            echo "Le script n'est pas présent dans le dossier 'auto'";
+            // On récupère les données du dernier commit pour les enregistrer dans un fichier
+            $lastcommit = $payload['head_commit']['id'] . ' - ' . $payload['head_commit']['message'];
+
+            // On envoie un mail d'echec
+            $to = DEV_MAIL;
+            $subject = "Echec - Déploiement du site";
+            $message = "Le site n\'a pu être déployé";
+            $message .= "\n\nDernier commit: " . $lastcommit;
+            $headers = "From: api.deploy@porrini.tech" . "\r\n";
+            
+            mail($to, $subject, $message, $headers);
+
+            // On retourne le résultat
             return;
         }
-
-        // On execute le script shell
-        $output = shell_exec('./app/auto/autodeploy.sh');
-
-        // On envoie un mail pour confirmer le déploiement
-        $to = "2608lucas@gmail.com";
-        $subject = "Déploiement du site";
-        $message = "Le site a été déployé avec succès";
-        $headers = "From: api.deploy@porrini.tech" . "\r\n";
-        
-        mail($to, $subject, $message, $headers);
-
-        // On retourne le résultat
-        echo $output;
     }
 
     public function index()
