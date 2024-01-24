@@ -24,7 +24,7 @@ class ApiController
             return;
         }
 
-        $hash = hash_hmac('sha1', $payload, $secret);
+        $hash = hash_hmac('sha1', $payload, $secret); // On génère le hash
 
         if (hash_equals('sha1=' . $hash, $githubSignature)) {
             file_put_contents('./logs/auto/payload.log', 'payload: ' . $payload . ';\nhash: ' . $hash . ';\nsecret: ' . $secret . ';\ngithubSignature: ' . $githubSignature . ';\n', FILE_APPEND);
