@@ -44,20 +44,20 @@ class ApiController
             shell_exec('./app/auto/autodeploy.sh');
 
             // On récupère les données du dernier commit pour les enregistrer dans un fichier
-            $payload = json_decode($payload, true);
-            $lastcommit = $payload['head_commit']['id'] . ' - ' . $payload['head_commit']['message'];
+            // $payload = json_decode($payload, true);
+            // $lastcommit = $payload['head_commit']['id'] . ' - ' . $payload['head_commit']['message'];
 
-            // On ajoute les données dans tracking_deploy.log 
-            file_put_contents('./logs/auto/tracking_deploy.log', 'Success (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
-
-            // On envoie un mail pour confirmer le déploiement
+            // On ajoute les données dans tracking_deploy.log
+            //file_put_contents('./logs/auto/tracking_deploy.log', 'Error (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
+            file_put_contents('./logs/auto/tracking_deploy.log', 'Error (' .  $date . "): Test ;\n", FILE_APPEND);
+            // On envoie un mail d'echec
             $to = DEV_MAIL;
-            $subject = "Valid - Déploiement du site";
-            $message = "Le site a été déployé avec succès";
-            $message .= "\n\nDernier commit: " . $lastcommit;
+            $subject = "Echec - Déploiement du site"; 
+            $message = "Le site n\'a pu être déployé";
+            $message .= "\n\nDernier commit: ";
             $headers = "From: api.deploy@porrini.tech" . "\r\n";
             
-            mail($to, $subject, $message, $headers) ? file_put_contents('./logs/auto/mail.log', 'Mail sent (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND) : file_put_contents('./logs/auto/mail.log', 'Mail not sent (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
+            mail($to, $subject, $message, $headers) ? file_put_contents('./logs/auto/mail.log', 'Mail sent (' .  $date . "): Test ;\n", FILE_APPEND) : file_put_contents('./logs/auto/mail.log', 'Mail not sent (' .  $date . "): Test;\n", FILE_APPEND);
         } else {
             // La signature n'est pas valide, rejeter la requête
             $date = date('d/m/Y H:i:s');
@@ -65,20 +65,20 @@ class ApiController
             file_put_contents('./logs/auto/payload.log', 'Unvalid payload: ' . $data . ";\n", FILE_APPEND);
 
             // On récupère les données du dernier commit pour les enregistrer dans un fichier
-            $payload = json_decode($payload, true);
-            $lastcommit = $payload['head_commit']['id'] . ' - ' . $payload['head_commit']['message'];
+            // $payload = json_decode($payload, true);
+            // $lastcommit = $payload['head_commit']['id'] . ' - ' . $payload['head_commit']['message'];
 
             // On ajoute les données dans tracking_deploy.log
-            file_put_contents('./logs/auto/tracking_deploy.log', 'Error (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
-
+            //file_put_contents('./logs/auto/tracking_deploy.log', 'Error (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
+            file_put_contents('./logs/auto/tracking_deploy.log', 'Error (' .  $date . "): Test ;\n", FILE_APPEND);
             // On envoie un mail d'echec
             $to = DEV_MAIL;
             $subject = "Echec - Déploiement du site"; 
             $message = "Le site n\'a pu être déployé";
-            $message .= "\n\nDernier commit: " . $lastcommit;
+            $message .= "\n\nDernier commit: ";
             $headers = "From: api.deploy@porrini.tech" . "\r\n";
             
-            mail($to, $subject, $message, $headers) ? file_put_contents('./logs/auto/mail.log', 'Mail sent (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND) : file_put_contents('./logs/auto/mail.log', 'Mail not sent (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
+            mail($to, $subject, $message, $headers) ? file_put_contents('./logs/auto/mail.log', 'Mail sent (' .  $date . "): Test ;\n", FILE_APPEND) : file_put_contents('./logs/auto/mail.log', 'Mail not sent (' .  $date . "): Test;\n", FILE_APPEND);
         }
     }
 
