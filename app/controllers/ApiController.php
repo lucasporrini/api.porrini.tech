@@ -13,6 +13,10 @@ class ApiController
 
     public function github_webhook()
     {
+        // Enregistrement du payload dans un fichier
+        $payload = file_get_contents('php://input');
+        file_put_contents('./logs/auto/payload.lg', $payload);
+
         // On verifie que le script est présent dans le dossier "automatic"
         if(!file_exists('./app/auto/autodeploy.sh')) {
             echo "Le script n'est pas présent dans le dossier 'auto'";
@@ -27,11 +31,6 @@ class ApiController
         $subject = "Déploiement du site";
         $message = "Le site a été déployé avec succès";
         $headers = "From: api.deploy@porrini.tech" . "\r\n"; 
-
-        // Enregistrement du header dans un fichier
-        $file = fopen('./logs/auto/post.log', 'a');
-        fwrite($file, $headers);
-        fclose($file);
         
         mail($to, $subject, $message, $headers);
 
