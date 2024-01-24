@@ -15,41 +15,29 @@ class ApiController
     {
         // Enregistrement du payload dans un fichier
         $payload = file_get_contents('php://input');
-        echo'<pre>';
-        print_r($payload);
-        echo'</pre>';
         $githubSignature = isset($_SERVER['HTTP_X_HUB_SIGNATURE']) ? $_SERVER['HTTP_X_HUB_SIGNATURE'] : '';
-        echo'<pre>';
-        print_r($githubSignature);
-        echo'</pre>';
 
         // On vérifie que le secret est présent dans le fichier .env
         $secret = getenv('GITHUB_SECRET');
-        echo'<pre>';
-        print_r($secret);
-        echo'</pre>';
         if(!$secret) {
             echo "Le secret n'est pas présent dans le fichier .env";
             return;
         }
 
         $hash = hash_hmac('sha1', $payload, $secret);
-        echo'<pre>';
-        print_r($hash);
-        echo'</pre>';
 
-        // if (hash_equals('sha1=' . $hash, $githubSignature)) {
-        //     file_put_contents('./logs/auto/payload.log', 'payload: ' . $payload . ';\nhash: ' . $hash . ';\nsecret: ' . $secret . ';\ngithubSignature: ' . $githubSignature . ';\n', FILE_APPEND);
-        //     // La signature est valide, traiter le payload
-        //     $data = json_decode($payload, true);
-        //     return;
-        //     // Votre logique de traitement ici
-        // } else {
-        //     // La signature n'est pas valide, rejeter la requête
-        //     file_put_contents('./logs/auto/payload.log', 'payload: ' . $payload . ';\nhash: ' . $hash . ';\nsecret: ' . $secret . ';\ngithubSignature: ' . $githubSignature . ';\n', FILE_APPEND);
-        //     http_response_code(403); // Accès interdit
-        //     die('Signature non valide'); 
-        // }
+        if (hash_equals('sha1=' . $hash, $githubSignature)) {
+            file_put_contents('./logs/auto/payload.log', 'payload: ' . $payload . ';\nhash: ' . $hash . ';\nsecret: ' . $secret . ';\ngithubSignature: ' . $githubSignature . ';\n', FILE_APPEND);
+            // La signature est valide, traiter le payload
+            $data = json_decode($payload, true);
+            return;
+            // Votre logique de traitement ici
+        } else {
+            // La signature n'est pas valide, rejeter la requête
+            file_put_contents('./logs/auto/payload.log', 'payload: ' . $payload . ';\nhash: ' . $hash . ';\nsecret: ' . $secret . ';\ngithubSignature: ' . $githubSignature . ';\n', FILE_APPEND);
+            http_response_code(403); // Accès interdit
+            die('Signature non valide'); 
+        }
 
         // On verifie que le script est présent dans le dossier "automatic"
         if(!file_exists('./app/auto/autodeploy.sh')) {
@@ -57,19 +45,19 @@ class ApiController
             return;
         }
 
-        // // On execute le script shell
-        // $output = shell_exec('./app/auto/autodeploy.sh');
+        // On execute le script shell
+        $output = shell_exec('./app/auto/autodeploy.sh');
 
-        // // On envoie un mail pour confirmer le déploiement
-        // $to = "2608lucas@gmail.com";
-        // $subject = "Déploiement du site";
-        // $message = "Le site a été déployé avec succès";
-        // $headers = "From: api.deploy@porrini.tech" . "\r\n";
+        // On envoie un mail pour confirmer le déploiement
+        $to = "2608lucas@gmail.com";
+        $subject = "Déploiement du site";
+        $message = "Le site a été déployé avec succès";
+        $headers = "From: api.deploy@porrini.tech" . "\r\n";
         
-        // mail($to, $subject, $message, $headers);
+        mail($to, $subject, $message, $headers);
 
-        // // On retourne le résultat
-        // echo $output;
+        // On retourne le résultat
+        echo $output;
     }
 
     public function index()
