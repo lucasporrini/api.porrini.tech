@@ -23,7 +23,7 @@ class ApiController
             echo "Le secret n'est pas présent dans le fichier .env";
             return;
         }
-        
+
         $hash = hash_hmac('sha1', $payload, $secret);
 
         if (hash_equals('sha1=' . $hash, $githubSignature)) {
@@ -36,7 +36,7 @@ class ApiController
             // La signature n'est pas valide, rejeter la requête
             file_put_contents('./logs/auto/payload.log', 'payload: ' . $payload . ';\nhash: ' . $hash . ';\nsecret: ' . $secret . ';\ngithubSignature: ' . $githubSignature . ';\n', FILE_APPEND);
             http_response_code(403); // Accès interdit
-            die('Signature non valide'); 
+            die('Signature non valide');
         }
 
         // On verifie que le script est présent dans le dossier "automatic"
