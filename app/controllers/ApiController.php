@@ -47,10 +47,10 @@ class ApiController
             $lastcommit = $payload['head_commit']['id'] . ' - ' . $payload['head_commit']['message'];
 
             // On ajoute les données dans tracking_deploy.log
-            file_put_contents('./logs/auto/tracking_deploy.log', 'Success (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
+            //file_put_contents('./logs/auto/tracking_deploy.log', 'Success (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
 
             // On envoie un mail pour confirmer le déploiement
-            $to = "2608lucas@gmail.com";
+            $to = DEV_MAIL;
             $subject = "Valid - Déploiement du site";
             $message = "Le site a été déployé avec succès";
             $message .= "\n\nDernier commit: " . $lastcommit;
@@ -68,10 +68,10 @@ class ApiController
             $lastcommit = $payload['head_commit']['id'] . ' - ' . $payload['head_commit']['message'];
 
             // On ajoute les données dans tracking_deploy.log
-            file_put_contents('./logs/auto/tracking_deploy.log', 'Error (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
+            //file_put_contents('./logs/auto/tracking_deploy.log', 'Error (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
 
             // On envoie un mail d'echec
-            $to = "2608lucas@gmail.com";
+            $to = DEV_MAIL;
             $subject = "Echec - Déploiement du site"; 
             $message = "Le site n\'a pu être déployé";
             $message .= "\n\nDernier commit: " . $lastcommit;
