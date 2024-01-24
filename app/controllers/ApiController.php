@@ -18,7 +18,7 @@ class ApiController
         $githubSignature = isset($_SERVER['HTTP_X_HUB_SIGNATURE']) ? $_SERVER['HTTP_X_HUB_SIGNATURE'] : '';
 
         // On vérifie que le secret est présent dans le fichier .env
-        $secret = $_SESSION['GITHUB_SECRET'];
+        $secret = $_ENV['GITHUB_SECRET'];
         if(!$secret) { 
             echo "Le secret n'est pas présent dans le fichier .env";
             return;

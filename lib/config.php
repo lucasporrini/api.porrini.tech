@@ -45,23 +45,27 @@ define('RELATIVE_PATH_FUNCTIONS',       RELATIVE_PATH_PUBLIC . 'functions' . DS)
 // Lancement de la SESSION
 session_start();
 
-// Importer données du .env;
-$dotEnv = fopen('.env', 'r') or die("Unable to open file!");
-
-// Parcourir le fichier .env
-while(!feof($dotEnv)) {
-    $line = fgets($dotEnv);
-    if (trim($line) != '') {
-        list($key, $value) = explode('=', $line, 2);
-        $key = trim($key);
-        $value = trim($value);
-        putenv("$key=$value");
-    }
+// Importer valeurs du .env
+if(!file_exists('.env')) {
+    return;
 }
 
-fclose($dotEnv);
+$lines = file('.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+foreach ($lines as $line) {
+    if(strpos(trim($line), '#') === 0) {
+        continue;
+    }
 
-$_SESSION['GITHUB_SECRET'] = getenv('GITHUB_SECRET');
+    list($name, $value) = explode('=', $line, 2);
+    $name = trim($name);
+    $value = trim($value);
+
+    if(!array_key_exists($name, $_ENV)) {
+        putenv(sprintf('%s=%s', $name, $value));
+        $_ENV[$name] = $value;
+        $_SERVER[$name] = $value;
+    }
+};
 
 // Configuration de la connexion à la base de données
 $_CONFIG['db'] =        array(
