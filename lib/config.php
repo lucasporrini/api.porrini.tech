@@ -41,6 +41,9 @@ define('RELATIVE_PATH_PARTIALS',        RELATIVE_PATH_PUBLIC . 'partials' . DS);
 // Configuration des relatives paths "functions"
 define('RELATIVE_PATH_FUNCTIONS',       RELATIVE_PATH_PUBLIC . 'functions' . DS);
 
+// Lancement de la SESSION
+session_start();
+
 // Importer données du .env;
 $dotEnv = fopen('.env', 'r') or die("Unable to open file!");
 
@@ -56,6 +59,8 @@ while(!feof($dotEnv)) {
 }
 
 fclose($dotEnv);
+
+$_SESSION['GITHUB_SECRET'] = getenv('GITHUB_SECRET');
 
 // Configuration de la connexion à la base de données
 $_CONFIG['db'] =        array(
