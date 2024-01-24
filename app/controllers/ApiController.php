@@ -15,7 +15,22 @@ class ApiController
     {
         // Enregistrement du payload dans un fichier
         $payload = file_get_contents('php://input');
-        file_put_contents('./logs/auto/payload.lg', $payload);
+        $githubSignature = isset($_SERVER['HTTP_X_HUB_SIGNATURE']) ? $_SERVER['HTTP_X_HUB_SIGNATURE'] : '';
+        $secret = $_ENV['GITHUB_SECRET'];
+        $hash = hash_hmac('sha1', $payload, $secret);
+
+        if (hash_equals('sha1=' . $hash, $githubSignature)) {
+            file_put_contents('./logs/auto/payload.log', 'payload: ' . $payload . ';\nhash: ' . $hash . ';\nsecret: ' . $secret . ';\ngithubSignature: ' . $githubSignature . ';\n', FILE_APPEND);
+            // La signature est valide, traiter le payload
+            $data = json_decode($payload, true);
+            return;
+            // Votre logique de traitement ici
+        } else {
+            // La signature n'est pas valide, rejeter la requête
+            file_put_contents('./logs/auto/payload.log', 'payload: ' . $payload . ';\nhash: ' . $hash . ';\nsecret: ' . $secret . ';\ngithubSignature: ' . $githubSignature . ';\n', FILE_APPEND);
+            http_response_code(403); // Accès interdit
+            die('Signature non valide');
+        }
 
         // On verifie que le script est présent dans le dossier "automatic"
         if(!file_exists('./app/auto/autodeploy.sh')) {
