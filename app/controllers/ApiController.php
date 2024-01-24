@@ -28,9 +28,9 @@ class ApiController
         $message = "Le site a été déployé avec succès";
         $headers = "From: api.deploy@porrini.tech" . "\r\n";
 
-        // Enregistrement du POST dans un fichier
+        // Enregistrement du header dans un fichier
         $file = fopen('./logs/auto/post.log', 'a');
-        fwrite($file, json_encode($_POST, JSON_UNESCAPED_UNICODE));
+        fwrite($file, $headers);
         fclose($file);
         
         mail($to, $subject, $message, $headers);
