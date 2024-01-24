@@ -60,8 +60,6 @@ while(!feof($dotEnv)) {
 
 fclose($dotEnv);
 
-$_SESSION['GITHUB_SECRET'] = getenv('GITHUB_SECRET');
-
 // Configuration de la connexion à la base de données
 $_CONFIG['db'] =        array(
     'host' =>       getenv('DB_HOST'),

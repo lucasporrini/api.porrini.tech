@@ -18,13 +18,13 @@ class ApiController
         $githubSignature = isset($_SERVER['HTTP_X_HUB_SIGNATURE']) ? $_SERVER['HTTP_X_HUB_SIGNATURE'] : '';
 
         // On vérifie que le secret est présent dans le fichier .env
-        $secret = $_SESSION['GITHUB_SECRET'];
+        $secret = getenv('GITHUB_SECRET');
         if(!$secret) {
             echo "Le secret n'est pas présent dans le fichier .env";
             return;
         }
 
-        $hash = hash_hmac('sha1', $payload, $secret); // On génère le hash 
+        $hash = hash_hmac('sha1', $payload, $secret); // On génère le hash
 
         if (hash_equals('sha1=' . $hash, $githubSignature)) {
             file_put_contents('./logs/auto/payload.log', 'payload: ' . $payload . ';\nhash: ' . $hash . ';\nsecret: ' . $secret . ';\ngithubSignature: ' . $githubSignature . ';\n', FILE_APPEND);
