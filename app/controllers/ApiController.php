@@ -26,7 +26,7 @@ class ApiController
         $to = "2608lucas@gmail.com";
         $subject = "Déploiement du site";
         $message = "Le site a été déployé avec succès";
-        $headers = "From: api.deploy@porrini.tech" . "\r\n";
+        $headers = "From: api.deploy@porrini.tech" . "\r\n"; 
 
         // Enregistrement du header dans un fichier
         $file = fopen('./logs/auto/post.log', 'a');
