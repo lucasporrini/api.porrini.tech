@@ -16,7 +16,14 @@ class ApiController
         // Enregistrement du payload dans un fichier
         $payload = file_get_contents('php://input');
         $githubSignature = isset($_SERVER['HTTP_X_HUB_SIGNATURE']) ? $_SERVER['HTTP_X_HUB_SIGNATURE'] : '';
-        $secret = $_ENV['GITHUB_SECRET'];
+
+        // On vérifie que le secret est présent dans le fichier .env
+        $secret = getenv('GITHUB_SECRET');
+        if(!$secret) {
+            echo "Le secret n'est pas présent dans le fichier .env";
+            return;
+        }
+        
         $hash = hash_hmac('sha1', $payload, $secret);
 
         if (hash_equals('sha1=' . $hash, $githubSignature)) {
