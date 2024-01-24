@@ -57,7 +57,6 @@ class ApiController
             $headers = "From: api.deploy@porrini.tech" . "\r\n";
             
             mail($to, $subject, $message, $headers);
-            return;
         } else {
             // La signature n'est pas valide, rejeter la requête
             $date = date('d/m/Y H:i:s');
@@ -78,9 +77,6 @@ class ApiController
             $headers = "From: api.deploy@porrini.tech" . "\r\n";
             
             mail($to, $subject, $message, $headers);
-
-            // On retourne le résultat
-            return;
         }
     }
 
