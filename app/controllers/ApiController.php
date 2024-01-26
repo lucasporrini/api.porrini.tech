@@ -32,7 +32,7 @@ class ApiController
             $data = $date . ' - ' . $payload;
 
             // On enregistre le payload dans un fichier
-            file_put_contents('./logs/auto/payload.log', 'Valid payload:' . $data . ";\n", FILE_APPEND);
+            write_log('payload', 'Valid payload', $data, 'green');
 
             // On verifie que le script est présent dans le dossier "automatic"
             if(!file_exists('./app/auto/autodeploy.sh')) {
@@ -40,15 +40,15 @@ class ApiController
                 return;
             }
 
-            // On execute le script shell
+            // execution du script
             shell_exec('./app/auto/autodeploy.sh');
 
             // On récupère les données du dernier commit pour les enregistrer dans un fichier
             $payload = json_decode($payload, true);
             $lastcommit = $payload['head_commit']['id'] . ' - ' . $payload['head_commit']['message'];
 
-            // On ajoute les données dans tracking_deploy.log 
-            file_put_contents('./logs/auto/tracking_deploy.log', 'Success (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
+            // add the data in tracking_deploy.log
+            write_log('tracking_deploy', 'Success', $lastcommit, 'green');
 
             // On envoie un mail pour confirmer le déploiement
             $to = DEV_MAIL;
@@ -56,19 +56,19 @@ class ApiController
             $message = "Le site a été déployé avec succès\n\nDernier commit: " . $lastcommit;
             $headers = "From: api.deploy@porrini.tech" . "\r\n";
             
-            mail($to, $subject, $message, $headers) ? file_put_contents('./logs/auto/mail.log', 'Mail sent (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND) : file_put_contents('./logs/auto/mail.log', 'Mail not sent (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
+            mail($to, $subject, $message, $headers) ? write_log('mail', 'Mail sent', '(' . $date . '): ' . $lastcommit, 'green') : write_log('mail', 'Mail not sent', '(' . $date . '): ' . $lastcommit, 'red');
         } else {
             // La signature n'est pas valide, rejeter la requête
             $date = date('d/m/Y H:i:s');
             $data = $date . ' - ' . $payload;
-            file_put_contents('./logs/auto/payload.log', 'Unvalid payload: ' . $data . ";\n", FILE_APPEND);
+            write_log('payload', 'Unvalid payload', $data, 'red');
 
             // On récupère les données du dernier commit pour les enregistrer dans un fichier
             $payload = json_decode($payload, true);
             $lastcommit = $payload['head_commit']['id'] . ' - ' . $payload['head_commit']['message'];
 
-            // On ajoute les données dans tracking_deploy.log
-            file_put_contents('./logs/auto/tracking_deploy.log', 'Error (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
+            // add the data in tracking_deploy.log
+            write_log('tracking_deploy', 'Error', $lastcommit, 'red');
 
             // On envoie un mail d'echec
             $to = DEV_MAIL;
@@ -76,7 +76,7 @@ class ApiController
             $message = "Le site n\'a pu être déployé\n\nDernier commit: " . $lastcommit;
             $headers = "From: api.deploy@porrini.tech" . "\r\n";
             
-            mail($to, $subject, $message, $headers) ? file_put_contents('./logs/auto/mail.log', 'Mail sent (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND) : file_put_contents('./logs/auto/mail.log', 'Mail not sent (' .  $date . '): ' . $lastcommit . ";\n", FILE_APPEND);
+            mail($to, $subject, $message, $headers) ? write_log('mail', 'Mail sent', '(' . $date . '): ' . $lastcommit, 'green') : write_log('mail', 'Mail not sent', '(' . $date . '): ' . $lastcommit, 'red');
         }
     }
 
