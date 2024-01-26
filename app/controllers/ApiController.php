@@ -115,7 +115,7 @@ class ApiController
 
     public function get_chatbot_buttons()
     {
-        // On récupère le token dans le header
+        // get token from header
         $headers = apache_request_headers();
         $token = $headers['Authorization'];
 
