@@ -1,31 +1,32 @@
 <?php
-// charger la configuration
+// load the configuration
 require_once 'lib/config.php';
 
-// Tester le mode debug
+// test debug mode
 if (SITE_DEBUG === true) {
-    // On active les erreurs PHP
+    // turn on all errors
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 }
 
-// charger la connexion à la base de données
+// load the global functions
+require_once 'lib/preprocess.php';
+
+// load the database connection
 require_once 'lib/conn.php';
 
-// charger le router
+// load the router
 require_once 'app/router/Router.php';
-
-// charger les routes
 $routes = require 'app/router/Route.php';
 
-// charger les Controllers
+// load the controllers
 require_once 'app/controllers/ApiController.php';
 
-// charger les models
+// load the router
 $router = new Router($_GET['url']);
 $ApiController = new ApiController();
 
 
-// Importation des routes
+// import the routes
 require_once 'app/router/routes.php';
 ?>
