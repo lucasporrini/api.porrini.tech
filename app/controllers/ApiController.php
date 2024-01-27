@@ -57,7 +57,7 @@ class ApiController
             $headers = "From: api.deploy@porrini.tech" . "\r\n";
             
             mail($to, $subject, $message, $headers) ? write_log('mail', 'Mail sent', '(' . $date . '): ' . $lastcommit, 'green') : write_log('mail', 'Mail not sent', '(' . $date . '): ' . $lastcommit, 'red');
-        } else {
+        } else { 
             // La signature n'est pas valide, rejeter la requête
             $date = date('d/m/Y H:i:s');
             $data = $date . ' - ' . $payload;
