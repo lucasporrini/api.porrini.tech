@@ -20,6 +20,7 @@ class ApiController
         // On vérifie que le secret est présent dans le fichier .env
         $secret = $_ENV['GITHUB_SECRET'];
         if(!$secret) { 
+            write_log('tracking_deploy', 'Error', 'Le secret n\'est pas présent dans le fichier .env', 'red');
             echo "Le secret n'est pas présent dans le fichier .env";
             return;
         }
@@ -36,6 +37,7 @@ class ApiController
 
             // On verifie que le script est présent dans le dossier "automatic"
             if(!file_exists('./app/auto/autodeploy.sh')) {
+                write_log('tracking_deploy', 'Error', 'Le script n\'est pas présent dans le dossier "auto"', 'red');
                 echo "Le script n'est pas présent dans le dossier 'auto'";
                 return;
             }
