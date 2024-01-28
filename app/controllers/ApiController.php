@@ -82,7 +82,7 @@ class ApiController
         }
     }
 
-    public function index() 
+    public function index()
     {
         // Retourner une page d'accueil
         echo "Bienvenue sur l'API de Porrini Lucas";
