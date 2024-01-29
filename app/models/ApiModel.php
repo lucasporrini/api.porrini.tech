@@ -23,7 +23,7 @@ class ApiModel
     {
         // On vérifie que le token existe
         if(!isset($token)) {
-            write_log('api', 'Error', 'Vous devez être connecté pour accéder à cette page', 'red');
+            write_log('tracking', 'Error', 'Vous devez être connecté pour accéder à cette page', 'red');
             http_response_code(401);
             echo json_encode(['error' => 'Vous devez être connecté pour accéder à cette page']);
             return false;
@@ -34,10 +34,10 @@ class ApiModel
             $pattern = '/Bearer\s(\S+)/';
 
             if(preg_match($pattern, $token, $matches)) {
-                write_log('api', 'Success', 'L\'authentification a réussi', 'green');
+                write_log('tracking', 'Success', 'L\'authentification a réussi', 'green');
                 $token = $matches[1];
             } else {
-                write_log('api', 'Error', 'L\'authentification a échoué', 'red');
+                write_log('tracking', 'Error', 'L\'authentification a échoué', 'red');
                 http_response_code(401);
                 echo json_encode(['error' => 'L\'authentification a échoué']);
                 return false;
@@ -47,20 +47,20 @@ class ApiModel
         // On vérifie que le token est valide
         $token_in_db = $this->verify_token($token);
         if(!$token_in_db) {
-            write_log('api', 'Error', 'Le token n\'est pas renseigné ou n\'est pas valide', 'red');
+            write_log('tracking', 'Error', 'Le token n\'est pas renseigné ou n\'est pas valide', 'red');
             http_response_code(401);
             echo json_encode(['error' => 'Le token n\'est pas renseigné ou n\'est pas valide']);
             return false;
         }
         
         if($token_in_db['value'] !== $token) {
-            write_log('api', 'Error', 'L\'authentification a échoué', 'red');
+            write_log('tracking', 'Error', 'L\'authentification a échoué', 'red');
             http_response_code(401);
             echo json_encode(['error' => 'L\'authentification a échoué']);
             return false;
         }
 
-        write_log('api', 'Success', 'L\'authentification a réussi', 'green');
+        write_log('tracking', 'Success', 'L\'authentification a réussi', 'green');
         
         return true;
     }
