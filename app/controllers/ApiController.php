@@ -131,7 +131,7 @@ class ApiController
         }
     }
 
-    public function get_chatbot_messages() 
+    public function get_chatbot_messages()
     {
         // On récupère le token dans le header
         $headers = apache_request_headers();
