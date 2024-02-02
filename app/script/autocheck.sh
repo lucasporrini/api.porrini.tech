@@ -1,5 +1,5 @@
 # Define the log file
-log_file="/chemin/vers/votre/fichier/log.txt"
+log_file="./logs/system/memory.log"
 
 # Add the date to the log file
 echo "----------------------" >> "$log_file"
